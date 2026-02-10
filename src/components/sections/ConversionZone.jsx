@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { MapPin, Clock, Send, CheckCircle } from 'lucide-react'
-import { fadeInUp, staggerContainer } from '@/utils/motion'
+import { fadeInUp, slideInLeft, slideInRight, staggerContainer, scaleInBounce, defaultViewport } from '@/utils/motion'
 import { CONTACT_INFO } from '@/utils/constants'
 import Container from '@/components/ui/Container'
 import SectionHeading from '@/components/ui/SectionHeading'
@@ -23,13 +23,20 @@ function FormField({ label, name, type = 'text', formData, errors, onChange, ...
         value={formData[name]}
         onChange={onChange}
         rows={isTextarea ? 4 : undefined}
-        className={`w-full rounded-lg border bg-surface px-4 py-3 text-sm text-text-primary placeholder:text-text-muted transition-colors focus:outline-none focus:border-eme-red ${
-          errors[name] ? 'border-red-500' : 'border-border-subtle'
+        className={`w-full rounded-lg border bg-surface px-4 py-3 text-sm text-text-primary placeholder:text-text-muted transition-all duration-300 focus:outline-none focus:border-eme-red focus:shadow-[0_0_0_3px_oklch(0.55_0.24_27/0.15)] ${
+          errors[name] ? 'border-red-500 shadow-[0_0_0_3px_oklch(0.6_0.2_25/0.15)]' : 'border-border-subtle'
         } ${isTextarea ? 'resize-none' : ''}`}
         {...props}
       />
       {errors[name] && (
-        <p className="mt-1 text-xs text-red-400">{errors[name]}</p>
+        <motion.p
+          role="alert"
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-1 text-xs font-medium text-red-300"
+        >
+          {errors[name]}
+        </motion.p>
       )}
     </div>
   )
@@ -39,9 +46,13 @@ export default function ConversionZone() {
   const { formData, errors, status, handleChange, handleSubmit } = useFormSubmit()
 
   return (
-    <section id="contacto" className="py-(--spacing-section-mobile) lg:py-(--spacing-section)">
-      <Container>
+    <section id="contacto" className="relative py-(--spacing-section-mobile) lg:py-(--spacing-section)">
+      {/* Diagonal top divider */}
+      <div className="absolute top-0 left-0 right-0 h-16 bg-surface/30 clip-diagonal" />
+
+      <Container className="relative">
         <SectionHeading
+          badge="Hablemos"
           title="Contactanos"
           subtitle="Contanos tu proyecto y te asesoramos sin compromiso."
         />
@@ -50,23 +61,27 @@ export default function ConversionZone() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={defaultViewport}
           className="grid gap-8 lg:grid-cols-2 lg:gap-12"
         >
           {/* Info + Mapa */}
-          <motion.div variants={fadeInUp} className="space-y-6">
+          <motion.div variants={slideInLeft} className="space-y-6">
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-eme-red" />
+              <div className="flex items-start gap-3 group">
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-eme-red/10 transition-colors group-hover:bg-eme-red/20">
+                  <MapPin className="h-4 w-4 text-eme-red" />
+                </div>
                 <div>
                   <p className="font-medium text-text-primary">{CONTACT_INFO.address}</p>
                   <p className="text-sm text-text-muted">{CONTACT_INFO.phone}</p>
                   <p className="text-sm text-text-muted">{CONTACT_INFO.email}</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Clock className="mt-0.5 h-5 w-5 flex-shrink-0 text-eme-red" />
-                <p className="text-text-secondary">{CONTACT_INFO.hours}</p>
+              <div className="flex items-start gap-3 group">
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-eme-red/10 transition-colors group-hover:bg-eme-red/20">
+                  <Clock className="h-4 w-4 text-eme-red" />
+                </div>
+                <p className="text-text-secondary pt-1.5">{CONTACT_INFO.hours}</p>
               </div>
             </div>
 
@@ -84,9 +99,14 @@ export default function ConversionZone() {
           </motion.div>
 
           {/* Formulario */}
-          <motion.div variants={fadeInUp}>
+          <motion.div variants={slideInRight}>
             {status === 'success' ? (
-              <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-border-subtle bg-surface p-8 text-center">
+              <motion.div
+                variants={scaleInBounce}
+                initial="hidden"
+                animate="visible"
+                className="flex h-full flex-col items-center justify-center rounded-2xl border border-green-500/20 bg-surface p-8 text-center"
+              >
                 <CheckCircle className="mb-4 h-16 w-16 text-green-500" />
                 <h3 className="font-heading text-xl font-bold uppercase">
                   Mensaje Enviado
@@ -94,11 +114,11 @@ export default function ConversionZone() {
                 <p className="mt-2 text-text-muted">
                   Nos pondremos en contacto con vos a la brevedad.
                 </p>
-              </div>
+              </motion.div>
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-6 lg:p-8"
+                className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-6 lg:p-8 transition-colors duration-300 hover:border-eme-red/20"
                 noValidate
               >
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -155,7 +175,10 @@ export default function ConversionZone() {
                   disabled={status === 'submitting'}
                 >
                   {status === 'submitting' ? (
-                    'Enviando...'
+                    <span className="flex items-center gap-2">
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                      Enviando...
+                    </span>
                   ) : (
                     <>
                       <Send size={18} />

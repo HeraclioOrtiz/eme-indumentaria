@@ -18,21 +18,21 @@ export const SERVICES = [
   {
     title: 'Sublimación',
     description: 'Impresión full-color sobre poliéster con tintas de alta resistencia al lavado y la fricción.',
-    image: '/assets/services/sublimation-sport.jpg',
+    image: '/assets/services/sublimation-clean.jpg',
     icon: Flame,
     span: '',
   },
   {
     title: 'Bordado Industrial',
     description: 'Bordado computarizado de alta definición para logos, escudos y detalles sobre cualquier textil.',
-    image: '/assets/services/embroidery-macro.jpg',
+    image: '/assets/services/embroidery-detail.jpg',
     icon: PenTool,
     span: '',
   },
   {
     title: 'Estampado DTF',
     description: 'Tecnología Direct-to-Film para estampados vibrantes y duraderos sobre algodón, poliéster y mezclas.',
-    image: '/assets/services/dtf-print.jpg',
+    image: '/assets/services/dtf-delivery.jpg',
     icon: Printer,
     span: 'lg:col-span-2',
   },
@@ -79,17 +79,16 @@ export const GALLERY_IMAGES = [
   { src: '/assets/gallery/catalogo-2.png', alt: 'Campera deportiva personalizada EME' },
   { src: '/assets/gallery/catalogo-3.png', alt: 'Indumentaria corporativa con bordado EME' },
   { src: '/assets/gallery/catalogo-4.png', alt: 'Uniforme deportivo completo EME Indumentaria' },
-  { src: '/assets/gallery/catalogo-5.png', alt: 'Remera estampada DTF EME Indumentaria' },
 ]
 
 export const CONTACT_INFO = {
-  address: 'Bahía Blanca, Buenos Aires, Argentina',
-  phone: '+54 291 XXX-XXXX',
-  email: 'info@emeindumentaria.com',
-  instagram: 'https://www.instagram.com/emeindumentaria',
-  whatsapp: 'https://wa.me/5492910000000',
-  hours: 'Lunes a Viernes 8:00 - 17:00',
-  mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48889.97898387848!2d-62.27243!3d-38.71959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95edbce35e313c71%3A0x7e77bc4960f1506b!2sBah%C3%ADa%20Blanca%2C%20Buenos%20Aires!5e0!3m2!1ses-419!2sar',
+  address: 'Teniente Farias 49, Bahía Blanca, Buenos Aires',
+  phone: '0291 576-3316',
+  email: 'emeindumentariaventas@gmail.com',
+  instagram: 'https://www.instagram.com/emeindumentaria.ar',
+  whatsapp: 'https://wa.me/542915763316',
+  hours: 'Lunes a Viernes 8:00 - 16:00',
+  mapEmbedUrl: 'https://maps.google.com/maps?q=Teniente+Farias+49,+Bahia+Blanca,+Buenos+Aires,+Argentina&t=&z=16&ie=UTF8&iwloc=&output=embed',
 }
 
 export const TESTIMONIALS = [

@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { Menu, X, Instagram } from 'lucide-react'
+import { cn } from '@/utils/cn'
 import { NAV_LINKS, CONTACT_INFO } from '@/utils/constants'
 import Container from '@/components/ui/Container'
+import Button from '@/components/ui/Button'
 
 function WhatsAppIcon(props) {
   return (
@@ -14,16 +16,33 @@ function WhatsAppIcon(props) {
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const { scrollY } = useScroll()
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setScrolled(latest > 80)
+  })
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-border-subtle bg-primary/80 backdrop-blur-md">
+    <header
+      className={cn(
+        'fixed top-0 z-50 w-full',
+        'transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-out',
+        scrolled
+          ? 'border-b border-white/[0.06] bg-primary/90 shadow-lg shadow-black/10 backdrop-blur-xl'
+          : 'border-b border-transparent bg-transparent backdrop-blur-none'
+      )}
+    >
       <Container>
-        <nav className="flex h-16 items-center justify-between" aria-label="Navegación principal">
+        <nav
+          className="flex h-16 items-center justify-between"
+          aria-label="Navegación principal"
+        >
           <a href="#" className="flex-shrink-0">
             <img
               src="/assets/brand/eme-logo.png"
               alt="EME Indumentaria"
-              className="h-10 w-auto"
+              className="h-9 w-auto"
             />
           </a>
 
@@ -33,40 +52,44 @@ export default function Header() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="text-sm font-medium text-text-secondary transition-colors hover:text-white"
+                  className="group relative text-sm font-medium text-text-secondary transition-colors duration-200 hover:text-white"
                 >
                   {link.label}
+                  <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-eme-red transition-all duration-300 group-hover:w-full" />
                 </a>
               </li>
             ))}
           </ul>
 
-          {/* Social icons desktop */}
+          {/* Desktop right side */}
           <div className="hidden items-center gap-4 md:flex">
             <a
               href={CONTACT_INFO.instagram}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="text-text-muted transition-colors hover:text-white"
+              className="text-text-muted transition-colors duration-200 hover:text-white"
             >
-              <Instagram size={20} />
+              <Instagram size={18} />
             </a>
             <a
               href={CONTACT_INFO.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className="text-text-muted transition-colors hover:text-white"
+              className="text-text-muted transition-colors duration-200 hover:text-white"
             >
-              <WhatsAppIcon className="h-5 w-5" />
+              <WhatsAppIcon className="h-[18px] w-[18px]" />
             </a>
+            <Button href="#contacto" size="default" className="ml-2 text-xs px-4 py-2">
+              Cotizar
+            </Button>
           </div>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white md:hidden"
+            className="text-white md:hidden p-2 -mr-2"
             aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={menuOpen}
           >
@@ -82,13 +105,18 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="border-t border-border-subtle bg-primary md:hidden"
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden border-t border-white/[0.06] bg-primary/98 backdrop-blur-xl md:hidden"
           >
             <Container>
               <ul className="flex flex-col gap-1 py-4">
-                {NAV_LINKS.map((link) => (
-                  <li key={link.href}>
+                {NAV_LINKS.map((link, i) => (
+                  <motion.li
+                    key={link.href}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.04 }}
+                  >
                     <a
                       href={link.href}
                       onClick={() => setMenuOpen(false)}
@@ -96,16 +124,16 @@ export default function Header() {
                     >
                       {link.label}
                     </a>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-              <div className="flex gap-4 border-t border-border-subtle px-4 py-4">
+              <div className="flex items-center gap-4 border-t border-white/[0.06] px-4 py-4">
                 <a
                   href={CONTACT_INFO.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="text-text-muted hover:text-white"
+                  className="text-text-muted hover:text-white transition-colors"
                 >
                   <Instagram size={20} />
                 </a>
@@ -114,10 +142,13 @@ export default function Header() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
-                  className="text-text-muted hover:text-white"
+                  className="text-text-muted hover:text-white transition-colors"
                 >
                   <WhatsAppIcon className="h-5 w-5" />
                 </a>
+                <Button href="#contacto" className="ml-auto text-sm">
+                  Cotizar
+                </Button>
               </div>
             </Container>
           </motion.div>

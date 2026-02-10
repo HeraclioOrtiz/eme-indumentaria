@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import { Instagram } from 'lucide-react'
+import { fadeInUp, staggerContainer, defaultViewport } from '@/utils/motion'
 import { NAV_LINKS, CONTACT_INFO } from '@/utils/constants'
 import Container from '@/components/ui/Container'
 
@@ -12,11 +14,20 @@ function WhatsAppIcon(props) {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border-subtle bg-surface/50 py-12 lg:py-16">
+    <footer className="relative border-t border-border-subtle bg-surface/50">
+      {/* Gradient top accent */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-eme-red/20 to-transparent" />
+
       <Container>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          className="grid gap-8 py-12 sm:grid-cols-2 lg:grid-cols-3 lg:py-16"
+        >
           {/* Logo + Descripción */}
-          <div>
+          <motion.div variants={fadeInUp}>
             <img
               src="/assets/brand/eme-logo.png"
               alt="EME Indumentaria"
@@ -26,10 +37,10 @@ export default function Footer() {
               Fábrica textil industrial en Bahía Blanca. Indumentaria deportiva
               y corporativa a medida con más de 18 años de trayectoria.
             </p>
-          </div>
+          </motion.div>
 
           {/* Links rápidos */}
-          <div>
+          <motion.div variants={fadeInUp}>
             <h4 className="font-heading text-sm font-bold uppercase tracking-wider mb-4">
               Links Rápidos
             </h4>
@@ -38,8 +49,9 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-text-muted transition-colors hover:text-white"
+                    className="group inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-white"
                   >
+                    <span className="h-px w-0 bg-eme-red transition-all duration-200 group-hover:w-3" />
                     {link.label}
                   </a>
                 </li>
@@ -49,16 +61,17 @@ export default function Footer() {
                   href="/assets/catalog/catalogo-eme-2024.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-text-muted transition-colors hover:text-white"
+                  className="group inline-flex items-center gap-1 text-sm text-text-muted transition-colors hover:text-white"
                 >
+                  <span className="h-px w-0 bg-eme-red transition-all duration-200 group-hover:w-3" />
                   Catálogo PDF
                 </a>
               </li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Contacto + Redes */}
-          <div>
+          <motion.div variants={fadeInUp}>
             <h4 className="font-heading text-sm font-bold uppercase tracking-wider mb-4">
               Contacto
             </h4>
@@ -68,31 +81,31 @@ export default function Footer() {
               <li>{CONTACT_INFO.email}</li>
               <li>{CONTACT_INFO.hours}</li>
             </ul>
-            <div className="mt-4 flex gap-4">
+            <div className="mt-4 flex gap-3">
               <a
                 href={CONTACT_INFO.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram de EME Indumentaria"
-                className="text-text-muted transition-colors hover:text-white"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-all duration-200 hover:border-eme-red/30 hover:text-white hover:scale-110"
               >
-                <Instagram size={20} />
+                <Instagram size={16} />
               </a>
               <a
                 href={CONTACT_INFO.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp de EME Indumentaria"
-                className="text-text-muted transition-colors hover:text-white"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle text-text-muted transition-all duration-200 hover:border-eme-red/30 hover:text-white hover:scale-110"
               >
-                <WhatsAppIcon className="h-5 w-5" />
+                <WhatsAppIcon className="h-4 w-4" />
               </a>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Copyright */}
-        <div className="mt-12 border-t border-border-subtle pt-6 text-center text-xs text-text-muted">
+        <div className="border-t border-border-subtle py-6 text-center text-xs text-text-muted">
           &copy; {new Date().getFullYear()} EME Indumentaria. Todos los derechos reservados.
         </div>
       </Container>

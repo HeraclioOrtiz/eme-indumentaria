@@ -8,6 +8,8 @@ const initialState = {
   message: '',
 }
 
+const FORM_ENDPOINT = 'https://formsubmit.co/ajax/emeindumentariaventas@gmail.com'
+
 export default function useFormSubmit() {
   const [formData, setFormData] = useState(initialState)
   const [errors, setErrors] = useState({})
@@ -34,20 +36,46 @@ export default function useFormSubmit() {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const newErrors = validate()
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
+
     setStatus('submitting')
-    // TODO: Conectar con backend/API cuando esté disponible
-    setTimeout(() => {
-      setStatus('success')
-      setFormData(initialState)
+
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          _subject: `Nuevo contacto web: ${formData.name}${formData.company ? ` — ${formData.company}` : ''}`,
+          _template: 'table',
+        }),
+      })
+
+      if (response.ok) {
+        setStatus('success')
+        setFormData(initialState)
+        setTimeout(() => setStatus('idle'), 8000)
+      } else {
+        setStatus('error')
+        setTimeout(() => setStatus('idle'), 5000)
+      }
+    } catch {
+      setStatus('error')
       setTimeout(() => setStatus('idle'), 5000)
-    }, 1000)
+    }
   }
 
   return { formData, errors, status, handleChange, handleSubmit }
