@@ -1,0 +1,27 @@
+node_modules
+dist
+.env
+.env.*
+*.local
+
+# Fuente original de imágenes (assets ya copiados a public/assets/)
+Imagenes/
+
+# Loki Mode state (volátil, por sesión)
+.loki/
+
+# Archivos de orquestación y skills (template, no producción)
+autonomy/
+skills/
+rules/
+SKILL.md
+
+# Claude Code internals
+.claude/
+
+# Agent skills (template, no producción)
+agent-skills/
+
+# Archivos de template/planificación
+README-TEMPLATE.md
+_EMEINDUMENTARIA*.pdf
