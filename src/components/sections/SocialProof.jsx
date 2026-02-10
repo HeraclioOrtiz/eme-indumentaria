@@ -46,9 +46,9 @@ function GalleryImage({ image }) {
         onLoad={() => setLoaded(true)}
         className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-110 ${loaded ? 'opacity-100' : 'opacity-0'}`}
       />
-      {/* Hover overlay — texto elevado para no chocar con logos del catálogo */}
-      <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <p className="px-4 text-center text-xs font-medium text-white leading-relaxed">{image.alt}</p>
+      {/* Hover overlay — parte inferior, arriba del logo EME del catálogo */}
+      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <p className="w-full px-3 pb-[18%] text-center text-xs font-medium text-white leading-relaxed">{image.alt}</p>
       </div>
     </motion.div>
   )
